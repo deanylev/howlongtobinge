@@ -1,0 +1,38 @@
+<br>
+<div class="container text-center">
+  <h1 class="display-3">How Long to Binge?</h1>
+  <br>
+  <form>
+    <div class="form-group">
+      {{input id="search" class="form-control" type="text" placeholder="Search for a movie to get started..." value=search}}
+    </div>
+  </form>
+  {{#if searching}}
+    <ul class="list-group">
+      {{#each searchResults as |result|}}
+        <a class="movie" {{action "selectMovie" result.imdbID}}>
+          <li class="list-group-item">
+            <img src={{result.Poster}} height="100">
+            {{result.Title}}
+          </li>
+        </a>
+      {{/each}}
+    </ul>
+  {{/if}}
+  {{#if selectedMovies.length}}
+    <br>
+    <h1>Selected Movies</h1>
+    <ul class="list-group">
+      {{#each selectedMovies as |movie|}}
+        <a class="movie" {{action "deselectMovie" movie.imdbID}}>
+          <li class="list-group-item">
+            {{movie.Title}}
+          </li>
+        </a>
+      {{/each}}
+      <li class="list-group-item">
+        <b>Total:</b> {{totalRuntime}} minutes
+      </li>
+    </ul>
+  {{/if}}
+</div>
