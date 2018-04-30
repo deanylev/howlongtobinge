@@ -2,31 +2,42 @@
 <div class="container text-center">
   <h1 class="display-3">How Long to Binge?</h1>
   <br>
-  <form>
+  <form {{action "search" on="submit"}}>
     <div class="form-group">
       {{input id="search" class="form-control" type="text" placeholder="Search for a movie to get started..." value=search}}
     </div>
+    {{#spin-button class="btn btn-primary btn-lg btn-block" buttonStyle="zoom-out" disabled=socketDisconnected action=(action "search")}}
+      {{fa-icon "search"}}
+    {{/spin-button}}
   </form>
-  {{#if searching}}
+  {{#if isSearching}}
+    <br>
+    <button class="btn btn-danger" {{action "closeSearch"}}>Close {{fa-icon "close"}}</button>
+    <br><br>
+  {{/if}}
+  {{#if (and isSearching noResults)}}
+    <h3>No results ¯\_(ツ)_/¯</h3>
+  {{/if}}
+  {{#if filteredResults}}
     <ul class="list-group">
-      {{#each searchResults as |result|}}
-        <a class="movie" {{action "selectMovie" result.imdbID}}>
-          <li class="list-group-item">
-            <img src={{result.Poster}} height="100">
-            {{result.Title}}
+      {{#each filteredResults as |result|}}
+        <a class="movie" {{action "selectMovie" result}}>
+          <li class="list-group-item select">
+            <img src={{result.Poster}} height="100" alt="Poster">
+            {{result.Title}} ({{result.Year}})
           </li>
         </a>
       {{/each}}
     </ul>
   {{/if}}
-  {{#if selectedMovies.length}}
+  {{#if selectedMovies}}
     <br>
     <h1>Selected Movies</h1>
     <ul class="list-group">
       {{#each selectedMovies as |movie|}}
-        <a class="movie" {{action "deselectMovie" movie.imdbID}}>
-          <li class="list-group-item">
-            {{movie.Title}}
+        <a class="movie" {{action "deselectMovie" movie}}>
+          <li class="list-group-item deselect">
+            <b>{{movie.Title}} ({{movie.Year}})</b> - {{movie.Runtime}}utes
           </li>
         </a>
       {{/each}}

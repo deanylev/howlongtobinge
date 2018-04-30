@@ -1,5 +1,22 @@
 @import "ember-cli-bootstrap-4/bootstrap";
+@import "spin-button";
 
-a.movie {
-  cursor: pointer;
+a {
+  &.movie {
+    cursor: pointer;
+
+    .select {
+      &:hover {
+        color: white;
+        @extend .bg-success;
+      }
+    }
+
+    .deselect {
+      &:hover {
+        color: white;
+        @extend .bg-danger;
+      }
+    }
+  }
 }
