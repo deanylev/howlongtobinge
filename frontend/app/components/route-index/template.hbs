@@ -6,7 +6,7 @@
     <div class="form-group">
       {{input id="search" class="form-control" type="text" placeholder="Search for a movie to get started..." value=search}}
     </div>
-    {{#spin-button class="btn btn-primary btn-lg btn-block" buttonStyle="zoom-out" disabled=socketDisconnected action=(action "search")}}
+    {{#spin-button class="btn btn-primary btn-lg btn-block" buttonStyle="zoom-out" disabled=disableSearch action=(action "search")}}
       {{fa-icon "search"}}
     {{/spin-button}}
   </form>
@@ -21,7 +21,7 @@
   {{#if filteredResults}}
     <ul class="list-group">
       {{#each filteredResults as |result|}}
-        <a class="movie" {{action "selectMovie" result}}>
+        <a class="clickable" {{action "selectMovie" result}}>
           <li class="list-group-item select">
             <img src={{result.Poster}} height="100" alt="Poster">
             {{result.Title}} ({{result.Year}})
@@ -35,15 +35,17 @@
     <h1>Selected Movies</h1>
     <ul class="list-group">
       {{#each selectedMovies as |movie|}}
-        <a class="movie" {{action "deselectMovie" movie}}>
+        <a class="clickable" {{action "deselectMovie" movie}}>
           <li class="list-group-item deselect">
-            <b>{{movie.Title}} ({{movie.Year}})</b> - {{movie.Runtime}}utes
+            <b>{{movie.Title}} ({{movie.Year}})</b> - {{display-runtime movie.Runtime runtimeDisplay}}
           </li>
         </a>
       {{/each}}
-      <li class="list-group-item">
-        <b>Total:</b> {{totalRuntime}} minutes
-      </li>
+      <a class="clickable" {{action "changeRuntimeDisplay"}}>
+        <li class="list-group-item">
+          <b>Total:</b> {{totalRuntime}}
+        </li>
+      </a>
     </ul>
   {{/if}}
 </div>

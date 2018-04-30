@@ -1,0 +1,14 @@
+import { helper } from '@ember/component/helper';
+
+export function displayRuntime([total, display]) {
+  total = total.slice(0, -4);
+  if (display === 'hours') {
+    let hours = Math.floor(total / 60);
+    let minutes = total % 60;
+    return `${hours} hour${hours === 1 ? '' : 's'} ${minutes} minute${minutes === 1 ? '' : 's'}`;
+  } else {
+    return `${total} minutes`;
+  }
+}
+
+export default helper(displayRuntime);

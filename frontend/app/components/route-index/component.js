@@ -8,6 +8,9 @@ export default Component.extend({
   socketDisconnected: Ember.computed.not('socketConnected'),
   isSearching: false,
   search: '',
+  disableSearch: Ember.computed('search', 'socketDisconnected', function() {
+    return !this.get('search').trim() || this.get('socketDisconnected');
+  }),
   searchResults: [],
   filteredResults: Ember.computed('searchResults', 'selectedMovies', function() {
     return this.get('searchResults').filter((result) => !this.get('selectedMovies').find((movie) => movie.imdbID === result.imdbID))
@@ -17,8 +20,16 @@ export default Component.extend({
   }),
   noResults: Ember.computed.not('isResults'),
   selectedMovies: [],
-  totalRuntime: Ember.computed('selectedMovies', function() {
-    return this.get('selectedMovies').map((movie) => parseInt(movie.Runtime.slice(0, -4))).reduce((a, b) => a + b);
+  runtimeDisplay: localStorage.getItem('runtimeDisplay'),
+  totalRuntime: Ember.computed('selectedMovies', 'runtimeDisplay', function() {
+    let total = this.get('selectedMovies').map((movie) => parseInt(movie.Runtime.slice(0, -4))).reduce((a, b) => a + b);
+    if (this.get('runtimeDisplay') === 'hours') {
+      let hours = Math.floor(total / 60);
+      let minutes = total % 60;
+      return `${hours} hour${hours === 1 ? '' : 's'} ${minutes} minute${minutes === 1 ? '' : 's'}`;
+    } else {
+      return `${total} minutes`;
+    }
   }),
 
   init() {
@@ -32,16 +43,12 @@ export default Component.extend({
     search() {
       return new Promise((resolve, reject) => {
         this.set('searchText', '');
-        if (this.get('search').trim()) {
-          socket.emit('search', this.get('search'));
-          socket.once('searchResults', (results) => {
-            this.set('isSearching', true);
-            this.set('searchResults', results);
-            resolve();
-          });
-        } else {
+        socket.emit('search', this.get('search'));
+        socket.once('searchResults', (results) => {
+          this.set('isSearching', true);
+          this.set('searchResults', results);
           resolve();
-        }
+        });
       });
     },
 
@@ -59,6 +66,12 @@ export default Component.extend({
     closeSearch() {
       this.set('isSearching', false);
       this.set('searchResults', []);
+    },
+
+    changeRuntimeDisplay() {
+      let display = this.get('runtimeDisplay') === 'hours' ? 'minutes' : 'hours';
+      this.set('runtimeDisplay', display);
+      localStorage.setItem('runtimeDisplay', display);
     }
   }
 });
