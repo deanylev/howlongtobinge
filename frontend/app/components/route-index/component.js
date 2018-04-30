@@ -9,7 +9,7 @@ export default Component.extend({
   isSearching: false,
   search: '',
   disableSearch: Ember.computed('search', 'socketDisconnected', function() {
-    return !this.get('search').trim() || this.get('socketDisconnected');
+    return !this.get('search').trim() || this.get('search').length < 4 || this.get('socketDisconnected');
   }),
   searchResults: [],
   filteredResults: Ember.computed('searchResults', 'selectedMovies', function() {
