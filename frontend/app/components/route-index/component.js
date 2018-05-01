@@ -22,7 +22,7 @@ export default Component.extend({
   selectedMovies: [],
   runtimeDisplay: localStorage.getItem('runtimeDisplay'),
   totalRuntime: Ember.computed('selectedMovies', 'runtimeDisplay', function() {
-    let total = this.get('selectedMovies').map((movie) => parseInt(movie.Runtime.slice(0, -4))).reduce((a, b) => a + b);
+    let total = this.get('selectedMovies').map((movie) => parseInt(movie.runtime.slice(0, -4))).reduce((a, b) => a + b);
     if (this.get('runtimeDisplay') === 'hours') {
       let hours = Math.floor(total / 60);
       let minutes = total % 60;

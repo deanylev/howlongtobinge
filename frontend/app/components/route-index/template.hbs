@@ -23,8 +23,8 @@
       {{#each filteredResults as |result|}}
         <a class="clickable" {{action "selectMovie" result}}>
           <li class="list-group-item select">
-            <img src={{result.Poster}} height="100" alt="Poster">
-            {{result.Title}} ({{result.Year}})
+            <img src={{result.poster}} height="100" alt="Poster">
+            {{result.title}} ({{result.year}})
           </li>
         </a>
       {{/each}}
@@ -37,7 +37,7 @@
       {{#each selectedMovies as |movie|}}
         <a class="clickable" {{action "deselectMovie" movie}}>
           <li class="list-group-item deselect">
-            <b>{{movie.Title}} ({{movie.Year}})</b> - {{display-runtime movie.Runtime runtimeDisplay}}
+            <b>{{movie.title}} ({{movie.year}})</b> - {{display-runtime movie.runtime runtimeDisplay}}
           </li>
         </a>
       {{/each}}
