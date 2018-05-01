@@ -20,10 +20,13 @@ export default Component.extend({
     return this.get('searchResults').length && this.get('filteredResults').length;
   }),
   noResults: Ember.computed.not('isResults'),
-  selectedMovies: [],
+  selectedMovies: JSON.parse(localStorage.getItem('selectedMovies') || '[]'),
   runtimeDisplay: localStorage.getItem('runtimeDisplay'),
   totalRuntime: Ember.computed('selectedMovies', function() {
     return this.get('selectedMovies').map((movie) => movie.runtime).reduce((a, b) => a + b);
+  }),
+  selectedMoviesChanged: Ember.observer('selectedMovies', function() {
+    localStorage.setItem('selectedMovies', JSON.stringify(this.get('selectedMovies')));
   }),
 
   init() {
@@ -58,6 +61,10 @@ export default Component.extend({
     deselectMovie(movie) {
       let selected = this.get('selectedMovies').filter((selectedMovie) => selectedMovie.imdbID !== movie.imdbID);
       this.set('selectedMovies', selected);
+    },
+
+    clearSelected() {
+      this.set('selectedMovies', []);
     },
 
     closeSearch() {

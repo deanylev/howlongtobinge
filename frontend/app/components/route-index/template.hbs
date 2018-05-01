@@ -12,7 +12,7 @@
   </form>
   {{#if isSearching}}
     <br>
-    <button class="btn btn-danger" {{action "closeSearch"}}>Close {{fa-icon "close"}}</button>
+    <button class="btn btn-danger" {{action "closeSearch"}}>Close {{fa-icon "times"}}</button>
     <br><br>
     {{#if noResults}}
       <h3>No results ¯\_(ツ)_/¯</h3>
@@ -35,6 +35,9 @@
   {{#if selectedMovies}}
     <br>
     <h1>Selected Movies</h1>
+    <button class="btn btn-primary" {{action "changeRuntimeDisplay"}}>{{fa-icon "clock"}}</button>
+    <button class="btn btn-danger" {{action "clearSelected"}}>{{fa-icon "times"}}</button>
+    <br><br>
     <ul class="list-group">
       {{#each selectedMovies as |movie|}}
         <a class="clickable" {{action "deselectMovie" movie}}>
