@@ -14,9 +14,9 @@
     <br>
     <button class="btn btn-danger" {{action "closeSearch"}}>Close {{fa-icon "close"}}</button>
     <br><br>
-  {{/if}}
-  {{#if (and isSearching noResults)}}
-    <h3>No results ¯\_(ツ)_/¯</h3>
+    {{#if noResults}}
+      <h3>No results ¯\_(ツ)_/¯</h3>
+    {{/if}}
   {{/if}}
   {{#if filteredResults}}
     <ul class="list-group">
