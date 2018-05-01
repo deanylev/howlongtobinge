@@ -36,20 +36,24 @@ io.on('connect', (socket) => {
             let result = results.shift();
             index++;
             request(`https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&i=${result.imdbID}`, (error, response, body) => {
-              result = JSON.parse(body);
-              if (result.Response) {
-                fullResults.push({
-                  imdbID: result.imdbID,
-                  title: result.Title,
-                  year: result.Year,
-                  runtime: parseInt(result.Runtime.slice(0, -4)),
-                  poster: result.Poster
-                });
-              }
-              if (results.length && index < RESULTS_LIMIT) {
-                getFullResult();
-              } else {
-                socket.emit('searchResults', fullResults);
+              try {
+                result = JSON.parse(body);
+                if (result.Response) {
+                  fullResults.push({
+                    imdbID: result.imdbID,
+                    title: result.Title,
+                    year: result.Year,
+                    runtime: parseInt(result.Runtime.slice(0, -4)),
+                    poster: result.Poster
+                  });
+                }
+                if (results.length && index < RESULTS_LIMIT) {
+                  getFullResult();
+                } else {
+                  socket.emit('searchResults', fullResults);
+                }
+              } catch (err) {
+                socket.emit('searchResults', []);
               }
             });
           };

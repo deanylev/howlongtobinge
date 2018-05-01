@@ -16,19 +16,21 @@
     <br><br>
     {{#if noResults}}
       <h3>No results ¯\_(ツ)_/¯</h3>
+    {{else if filteredResults}}
+      <ul class="list-group">
+        {{#each filteredResults as |result|}}
+          <a class="clickable" {{action "selectMovie" result}}>
+            <li class="list-group-item select">
+              <img src={{result.poster}} height="100" alt="Poster">
+              {{result.title}} ({{result.year}})
+            </li>
+          </a>
+        {{/each}}
+      </ul>
     {{/if}}
-  {{/if}}
-  {{#if filteredResults}}
-    <ul class="list-group">
-      {{#each filteredResults as |result|}}
-        <a class="clickable" {{action "selectMovie" result}}>
-          <li class="list-group-item select">
-            <img src={{result.poster}} height="100" alt="Poster">
-            {{result.title}} ({{result.year}})
-          </li>
-        </a>
-      {{/each}}
-    </ul>
+  {{else if searchTimeout}}
+    <br>
+    <h3>Timed out waiting for a response 😟</h3>
   {{/if}}
   {{#if selectedMovies}}
     <br>

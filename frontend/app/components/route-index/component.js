@@ -7,9 +7,10 @@ export default Component.extend({
   socketConnected: false,
   socketDisconnected: Ember.computed.not('socketConnected'),
   isSearching: false,
+  searchTimeout: false,
   search: '',
   disableSearch: Ember.computed('search', 'socketDisconnected', function() {
-    return !this.get('search').trim() || this.get('search').length < 4 || this.get('socketDisconnected');
+    return !this.get('search').trim() || this.get('socketDisconnected');
   }),
   searchResults: [],
   filteredResults: Ember.computed('searchResults', 'selectedMovies', function() {
@@ -35,13 +36,16 @@ export default Component.extend({
   actions: {
     search() {
       return new Promise((resolve, reject) => {
-        this.set('searchText', '');
+        this.set('searchTimeout', false);
         socket.emit('search', this.get('search'));
-        socket.once('searchResults', (results) => {
-          this.set('isSearching', true);
-          this.set('searchResults', results);
-          resolve();
-        });
+        socket.once('searchResults', resolve);
+        setTimeout(reject, 10000);
+      }).then((results) => {
+        this.set('searchResults', results);
+        this.set('isSearching', true);
+      }).catch(() => {
+        this.set('searchTimeout', true);
+        this.set('isSearching', false);
       });
     },
 
