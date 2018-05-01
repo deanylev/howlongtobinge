@@ -4,7 +4,7 @@
   <br>
   <form {{action "search" on="submit"}}>
     <div class="form-group">
-      {{input id="search" class="form-control" type="text" placeholder="Search for a movie to get started..." value=search}}
+      {{input id="search" class="form-control" type="text" placeholder="Search for a movie to get started..." value=search disabled=socketDisconnected}}
     </div>
     {{#spin-button class="btn btn-primary btn-lg btn-block" buttonStyle="zoom-out" disabled=disableSearch action=(action "search")}}
       {{fa-icon "search"}}
