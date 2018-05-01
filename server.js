@@ -42,7 +42,7 @@ io.on('connect', (socket) => {
                   imdbID: result.imdbID,
                   title: result.Title,
                   year: result.Year,
-                  runtime: result.Runtime,
+                  runtime: parseInt(result.Runtime.slice(0, -4)),
                   poster: result.Poster
                 });
               }
