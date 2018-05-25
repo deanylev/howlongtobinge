@@ -53,6 +53,7 @@ io.on('connect', (socket) => {
                   socket.emit('searchResults', fullResults);
                 }
               } catch (err) {
+                console.error(err);
                 socket.emit('searchResults', []);
               }
             });
@@ -62,6 +63,7 @@ io.on('connect', (socket) => {
           socket.emit('searchResults', []);
         }
       } catch (err) {
+        console.error(err);
         socket.emit('searchResults', []);
       }
     });
