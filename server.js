@@ -38,12 +38,13 @@ io.on('connect', (socket) => {
             request(`https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&i=${result.imdbID}`, (error, response, body) => {
               try {
                 result = JSON.parse(body);
-                if (result.Response) {
+                let runtime = parseInt(result.Runtime.slice(0, -4));
+                if (result.Response && !isNaN(runtime)) {
                   fullResults.push({
                     imdbID: result.imdbID,
                     title: result.Title,
                     year: result.Year,
-                    runtime: parseInt(result.Runtime.slice(0, -4)),
+                    runtime,
                     poster: result.Poster
                   });
                 }
